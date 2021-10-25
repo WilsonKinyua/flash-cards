@@ -3,5 +3,6 @@ from .models import Subject,Notes
 
 class EntryForm(ModelForm):
     class Meta:
-        model = Subject
-        fields = ('title','description','subject' )
+        model = Notes
+        fields = ('user','title','description','subject' )
+        exclude = ['created_at','updated_at']

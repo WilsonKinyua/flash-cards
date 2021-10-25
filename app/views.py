@@ -1,5 +1,5 @@
-from django.shortcuts import render
-
+from django.shortcuts import render,redirect
+from .forms import EntryForm
 from app.permissions import IsAdminOrReadOnly
 from .models import Subject, Notes
 
@@ -37,3 +37,17 @@ class NotesList(APIView):  # get all notes
         all_notes = Subject.objects.all()
         serializers = NotesSerializer(all_notes, many=True)
         return Response(serializers.data)
+
+def add(request):
+    if request.method == 'POST':
+        form = EntryForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    else:
+        form = EntryForm()
+
+    context = {'form' : form}
+
+    return render(request, 'entries/add.html', context)
