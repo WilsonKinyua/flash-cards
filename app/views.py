@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from app.permissions import IsAdminOrReadOnly
-from .models import Subject, Notes
+from .models import Profile, Subject, Notes
 
 # api
 from django.http import JsonResponse
@@ -9,7 +9,7 @@ from rest_framework import status
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializer import SubjectSerializer,NotesSerializer
+from .serializer import SubjectSerializer,NotesSerializer,ProfileSerializer
 from .permissions import IsAdminOrReadOnly
 
 
@@ -34,6 +34,15 @@ class NotesList(APIView):  # get all notes
     permission_classes = (IsAdminOrReadOnly,)
 
     def get(self, request, format=None):
-        all_notes = Subject.objects.all()
+        all_notes = Notes.objects.all()
         serializers = NotesSerializer(all_notes, many=True)
+        return Response(serializers.data)
+
+# ProfileList
+class ProfileList(APIView):
+    permission_classes = (IsAdminOrReadOnly,)
+
+    def get(self, request, format=None):
+        all_profiles = Profile.objects.all()
+        serializers = ProfileSerializer(all_profiles, many=True)
         return Response(serializers.data)

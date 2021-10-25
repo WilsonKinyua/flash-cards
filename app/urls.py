@@ -10,6 +10,7 @@ urlpatterns = [
     # api
     url(r'^api/subjects/$', views.SubjectList.as_view()),
     url(r'^api/notes/$', views.NotesList.as_view()),
+    url(r'^api/profiles/$', views.ProfileList.as_view()),
 ]
 
 
