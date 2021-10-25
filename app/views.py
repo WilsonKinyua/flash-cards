@@ -16,6 +16,9 @@ from .permissions import IsAdminOrReadOnly
 
 # Create your views here.
 
+def index(request):
+    return render(request, 'index.html')
+
 
 # rest api ====================================
 class SubjectList(APIView):  # get all Subjects
