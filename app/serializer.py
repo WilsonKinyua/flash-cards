@@ -6,7 +6,7 @@ from .models import Profile, Subject, Notes
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
-        fields = ("name", "created_at", "updated_at")
+        fields = ("id","name", "created_at", "updated_at")
 
 
 # Notes serializer
