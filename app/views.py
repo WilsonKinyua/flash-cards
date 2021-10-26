@@ -51,3 +51,12 @@ def add(request):
     context = {'form' : form}
 
     return render(request, 'entries/add.html', context)
+
+def home(request):
+    entries = Notes.objects.order_by('-date_posted')
+    print('***')
+    context = {
+        'entries' : entries
+    }
+   
+    return render(request, 'entries/index.html', context)    
