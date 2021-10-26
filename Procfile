@@ -1,1 +1,0 @@
-web: gunicorn fcards.wsgi --log-file -
