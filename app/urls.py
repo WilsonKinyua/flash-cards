@@ -17,6 +17,8 @@ urlpatterns = [
     url(r'^api/users/$', views.UserList.as_view()),
     # create user
     url(r'^api/users/create/$', views.UserCreate.as_view()),
+    # login
+    url(r'^api/auth/login/$', views.loginUser.as_view()),
 ]
 
 

@@ -4,6 +4,10 @@ from app.permissions import IsAdminOrReadOnly
 from .models import Profile, Subject, Notes
 from django.contrib.auth.models import User
 
+# authentication
+from django.contrib.auth import authenticate, login, logout
+
+
 # api
 from django.http import JsonResponse
 from rest_framework import status
@@ -22,7 +26,7 @@ def index(request):
 
 # rest api ====================================
 
-class UserList(APIView):
+class UserList(APIView): # list all users
     """
     List all users.
     """
@@ -33,7 +37,7 @@ class UserList(APIView):
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
-class UserCreate(APIView):
+class UserCreate(APIView): # create user
     """
     Create a user.
     """
@@ -46,6 +50,22 @@ class UserCreate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
+
+# login user ====================================
+class loginUser(APIView):
+    def post(self, request, format=None):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                serializer = UserSerializer(user)
+                return Response(serializer.data)
+            else:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 class SubjectList(APIView):  # get all Subjects
     permission_classes = (IsAdminOrReadOnly,)
