@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 from django_registration.backends.one_step.views import RegistrationView
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +28,6 @@ urlpatterns = [
     ),
     path("accounts/", include("django_registration.backends.one_step.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
-    path("api-auth/", include("rest_framework.urls")),
     url(r"^", include("app.urls")),
+    url(r'^api-auth/', obtain_auth_token),
 ]
