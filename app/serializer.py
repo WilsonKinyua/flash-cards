@@ -13,7 +13,7 @@ class SubjectSerializer(serializers.ModelSerializer):
 class NotesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notes
-        fields = ("user", "title", "description", "subject", "created_at", "updated_at")
+        fields = ("id","user", "title", "description", "subject", "created_at", "updated_at")
 
 
 # Profile serializer

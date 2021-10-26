@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^api/subjects/$', views.SubjectList.as_view()),
     url(r'^api/subjects/(?P<pk>[0-9]+)/$', views.SubjectDetail.as_view()),
     url(r'^api/notes/$', views.NotesList.as_view()),
+    url(r'^api/notes/(?P<pk>[0-9]+)/$', views.NotesDetail.as_view()),
     url(r'^api/profiles/$', views.ProfileList.as_view()),
 ]
 
