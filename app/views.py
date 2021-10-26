@@ -53,7 +53,7 @@ def add(request):
     return render(request, 'entries/add.html', context)
 
 def home(request):
-    entries = Notes.objects.order_by('-date_posted')
+    entries = Notes.objects.order_by('created_at')
     print('***')
     context = {
         'entries' : entries
