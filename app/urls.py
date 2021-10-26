@@ -10,6 +10,7 @@ urlpatterns = [
     # api
     url(r'^api/subjects/$', views.SubjectList.as_view()),
     url(r'^api/notes/$', views.NotesList.as_view()),
+    path('add/', views.add, name='add')
 ]
 
 
