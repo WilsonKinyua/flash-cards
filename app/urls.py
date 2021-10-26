@@ -15,10 +15,9 @@ urlpatterns = [
     url(r'^api/profiles/$', views.ProfileList.as_view()),
     url(r'^api/profiles/(?P<pk>[0-9]+)/$', views.ProfileDetail.as_view()),
     url(r'^api/users/$', views.UserList.as_view()),
-    # create user
     url(r'^api/users/create/$', views.UserCreate.as_view()),
-    # login
     url(r'^api/auth/login/$', views.loginUser.as_view()),
+    url(r'^api/auth/logout/$', views.logoutUser.as_view()),
 ]
 
 

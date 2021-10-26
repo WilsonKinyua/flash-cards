@@ -67,6 +67,14 @@ class loginUser(APIView):
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+
+# logout user ====================================
+class logoutUser(APIView): # logout user
+    def get(self, request, format=None):
+        logout(request)
+        return Response(status=status.HTTP_200_OK)
+
+
 class SubjectList(APIView):  # get all Subjects
     permission_classes = (IsAdminOrReadOnly,)
 
