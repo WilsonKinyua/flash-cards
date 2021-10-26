@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from app.permissions import IsAdminOrReadOnly
 from .models import Profile, Subject, Notes
+from django.contrib.auth.models import User
 
 # api
 from django.http import JsonResponse
@@ -9,7 +10,7 @@ from rest_framework import status
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializer import SubjectSerializer, NotesSerializer, ProfileSerializer
+from .serializer import SubjectSerializer, NotesSerializer, ProfileSerializer, UserSerializer,UserCreateSerializer
 from .permissions import IsAdminOrReadOnly
 
 
@@ -20,6 +21,32 @@ def index(request):
 
 
 # rest api ====================================
+
+class UserList(APIView):
+    """
+    List all users.
+    """
+    permission_classes = (IsAdminOrReadOnly,)
+
+    def get(self, request, format=None):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+class UserCreate(APIView):
+    """
+    Create a user.
+    """
+    permission_classes = (IsAdminOrReadOnly,)
+
+    def post(self, request, format=None):
+        serializer = UserCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
 class SubjectList(APIView):  # get all Subjects
     permission_classes = (IsAdminOrReadOnly,)
 
@@ -67,13 +94,12 @@ class SubjectDetail(APIView):  # get, update, delete single Subject
 class NotesList(APIView):  # get all notes
     permission_classes = (IsAdminOrReadOnly,)
 
-    def get(self, request, format=None): # get all notes
+    def get(self, request, format=None):  # get all notes
         all_notes = Notes.objects.all()
         serializers = NotesSerializer(all_notes, many=True)
         return Response(serializers.data)
 
-    
-    def post(self, request, format=None): # create new note
+    def post(self, request, format=None):  # create new note
         serializers = NotesSerializer(data=request.data)
         if serializers.is_valid():
             serializers.save()
@@ -90,12 +116,12 @@ class NotesDetail(APIView):  # get, update, delete single note
         except Notes.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk, format=None): # get note
+    def get(self, request, pk, format=None):  # get note
         notes = self.get_object(pk)
         serializers = NotesSerializer(notes)
         return Response(serializers.data)
 
-    def put(self, request, pk, format=None): # update note
+    def put(self, request, pk, format=None):  # update note
         notes = self.get_object(pk)
         serializers = NotesSerializer(notes, data=request.data)
         if serializers.is_valid():
@@ -103,7 +129,7 @@ class NotesDetail(APIView):  # get, update, delete single note
             return Response(serializers.data)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk, format=None): # delete note
+    def delete(self, request, pk, format=None):  # delete note
         notes = self.get_object(pk)
         notes.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -124,7 +150,6 @@ class ProfileList(APIView):
             serializers.save()
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
-    
 
 
 # ProfileDetail
